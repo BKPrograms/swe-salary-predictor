@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import GridSearchCV
@@ -72,20 +71,20 @@ df["Country"] = le_country.fit_transform(df["Country"])
 X = np.array(df.drop("CompTotal", axis=1).values)
 y = np.array(df["CompTotal"].values)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
 max_depth = [None, 2, 4, 6, 8, 10, 12]
 parameters = {"max_depth": max_depth}
 
 model = DecisionTreeRegressor(random_state=0)
 gs = GridSearchCV(model, parameters, scoring="neg_mean_squared_error")
-gs.fit(X_train, y_train)
+gs.fit(X, y)
 
 regressor = gs.best_estimator_
 
-regressor.fit(X_train, y_train)
+regressor.fit(X, y)
 
 data = {"model": regressor, "le_country": le_country, "le_education": le_education}
 
-with open('saved_steps.pkl', 'wb') as file:
+with open('saved_model.pkl', 'wb') as file:
     pickle.dump(data, file)
