@@ -61,6 +61,11 @@ df = df[df["CompTotal"] <= 500000]
 df["YearsCodePro"] = df["YearsCodePro"].apply(year_to_int)
 df["EdLevel"] = df["EdLevel"].apply(reduce_education)
 
+saved_df = {"df": df}
+with open('saved_df.pkl', 'wb') as file:
+    pickle.dump(df, file)
+
+
 le_education = LabelEncoder()
 df["EdLevel"] = le_education.fit_transform(df["EdLevel"])
 
