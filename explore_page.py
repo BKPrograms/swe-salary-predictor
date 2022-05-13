@@ -17,6 +17,7 @@ def load_data():
 
 
 df = load_data()
+print(df.value_counts)
 
 
 def show_explore_page():
